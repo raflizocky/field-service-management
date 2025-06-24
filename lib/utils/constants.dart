@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'theme.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/foundation.dart';
 
 // API Configuration
-const kApiBaseUrl = 'http://127.0.0.1:8000/api';
+final kApiBaseUrl = kIsWeb
+    ? dotenv.env['API_BASE_URL_WEB']
+    : dotenv.env['API_BASE_URL_MOBILE'];
 
 // Colors (using new theme)
 const kPrimaryColor = AppColors.primary;
