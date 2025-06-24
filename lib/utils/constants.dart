@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 
 // API Configuration
 final kApiBaseUrl = kIsWeb
-    ? dotenv.env['API_BASE_URL_WEB']
-    : dotenv.env['API_BASE_URL_MOBILE'];
+    ? dotenv.env['API_BASE_URL_DEV_WEB']
+    : dotenv.env['API_BASE_URL_DEV_MOBILE'];
 
 // Colors (using new theme)
 const kPrimaryColor = AppColors.primary;

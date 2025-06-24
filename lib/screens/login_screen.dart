@@ -23,30 +23,39 @@ class _LoginScreenState extends State<LoginScreen> {
 
     setState(() => isLoading = true);
 
-    final success = await AuthService.login(
-      emailController.text.trim(),
-      passwordController.text,
-    );
+    String? errorMessage;
+    final success =
+        await AuthService.login(
+          emailController.text.trim(),
+          passwordController.text,
+        ).catchError((e) {
+          errorMessage = e.toString();
+          return false;
+        });
 
     setState(() => isLoading = false);
 
-    if (success) {
+    if (success == true) {
       Navigator.pushReplacementNamed(context, '/tasks');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Row(
+          content: Row(
             children: [
-              Icon(Icons.error_outline, color: Colors.white),
-              SizedBox(width: 8),
-              Text('Login gagal. Periksa email dan password Anda.'),
+              const Icon(Icons.error_outline, color: Colors.white),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  errorMessage != null && errorMessage!.isNotEmpty
+                      ? errorMessage!
+                      : 'Login gagal. Periksa email dan password Anda.',
+                ),
+              ),
             ],
           ),
           backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       );
     }
@@ -72,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 60),
-                
+
                 // Logo/Header Section
                 Container(
                   padding: const EdgeInsets.all(kPaddingLarge),
@@ -86,9 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: AppColors.primary,
                   ),
                 ),
-                
+
                 const SizedBox(height: kPaddingLarge),
-                
+
                 Text(
                   'Welcome Back!',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -97,9 +106,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: kPaddingSmall),
-                
+
                 Text(
                   'Sign in to continue to Fieldo FSM',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -107,9 +116,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Login Form Card
                 CustomCard(
                   child: Column(
@@ -126,15 +135,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (value == null || value.isEmpty) {
                             return 'Email is required';
                           }
-                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                          if (!RegExp(
+                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                          ).hasMatch(value)) {
                             return 'Enter a valid email';
                           }
                           return null;
                         },
                       ),
-                      
+
                       const SizedBox(height: kPaddingMedium),
-                      
+
                       TextFormField(
                         controller: passwordController,
                         obscureText: _obscurePassword,
@@ -144,8 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintText: 'Enter your password',
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscurePassword 
-                                  ? Icons.visibility_outlined 
+                              _obscurePassword
+                                  ? Icons.visibility_outlined
                                   : Icons.visibility_off_outlined,
                             ),
                             onPressed: () {
@@ -165,9 +176,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
-                      
+
                       const SizedBox(height: kPaddingLarge),
-                      
+
                       CustomButton(
                         text: 'Sign In',
                         onPressed: login,
@@ -178,9 +189,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: kPaddingLarge),
-                
+
                 // Footer
                 Text(
                   '© 2024 Fieldo FSM',

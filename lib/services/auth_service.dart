@@ -12,10 +12,7 @@ class AuthService {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
+        body: jsonEncode({'email': email, 'password': password}),
       );
 
       if (response.statusCode == 200) {
@@ -26,12 +23,15 @@ class AuthService {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('token', token);
           return true;
+        } else {
+          throw data['message'] ?? 'Token not found in response';
         }
+      } else {
+        final data = jsonDecode(response.body);
+        throw data['message'] ?? 'Login failed (${response.statusCode})';
       }
-      return false;
     } catch (e) {
-      print('Login error: $e');
-      return false;
+      throw e.toString();
     }
   }
 
