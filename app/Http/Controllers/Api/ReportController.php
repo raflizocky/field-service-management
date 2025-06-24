@@ -40,4 +40,17 @@ class ReportController extends Controller
             'report' => $report
         ]);
     }
+
+   public function index(Request $request)
+{
+    $user = $request->user();
+    $query = Report::where('technician_id', $user->id);
+
+    if ($request->has('task_id')) {
+        $query->where('task_id', $request->input('task_id'));
+    }
+
+    return response()->json(['reports' => $query->get()]);
+}
+
 }
