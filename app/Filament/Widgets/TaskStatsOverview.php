@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Task;
+use App\Models\Report;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
@@ -13,19 +14,9 @@ class TaskStatsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Pending Tasks', Task::where('status', 'pending')->count())
-                ->color('gray'),
-
-            Stat::make('In Progress Tasks', Task::where('status', 'in_progress')->count())
-                ->color('warning'),
-
-            Stat::make('Completed Tasks', Task::where('status', 'completed')->count())
-                ->color('success'),
+            Stat::make('Total Tasks', Task::count()),
+            Stat::make('Completed Tasks', Task::where('status', 'completed')->count()),
+            Stat::make('Reports Submitted', Report::count()),
         ];
-    }
-
-    public function getColumns(): int
-    {
-        return 3;
     }
 }

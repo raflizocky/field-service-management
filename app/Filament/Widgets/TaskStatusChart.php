@@ -7,22 +7,22 @@ use Filament\Widgets\ChartWidget;
 
 class TaskStatusChart extends ChartWidget
 {
+    protected static ?string $heading = 'Task Status Distribution';
+
     protected function getData(): array
     {
-        $data = Task::selectRaw('status, COUNT(*) as count')
-            ->groupBy('status')
-            ->pluck('count', 'status');
+        $statuses = ['pending', 'in_progress', 'completed'];
+        $data = [];
+
+        foreach ($statuses as $status) {
+            $data[] = Task::where('status', $status)->count();
+        }
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Number of Tasks',
-                    'data' => [
-                        $data['pending'] ?? 0,
-                        $data['in_progress'] ?? 0,
-                        $data['completed'] ?? 0,
-                    ],
-                    'backgroundColor' => ['#facc15', '#f97316', '#22c55e'],
+                    'label' => 'Tasks',
+                    'data' => $data,
                 ],
             ],
             'labels' => ['Pending', 'In Progress', 'Completed'],
@@ -31,6 +31,6 @@ class TaskStatusChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'line';
+        return 'bar';
     }
 }
