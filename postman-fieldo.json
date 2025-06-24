@@ -1,0 +1,125 @@
+{
+    "info": {
+        "name": "Fieldo FSM",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Login (Admin)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:8000/api/login",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "8000",
+                    "path": ["api", "login"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Today's Tasks",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}"
+                    },
+                    {
+                        "key": "Accept",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8000/api/tasks/today",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "8000",
+                    "path": ["api", "tasks", "today"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Submit Report",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}"
+                    },
+                    {
+                        "key": "Accept",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "task_id",
+                            "value": "1",
+                            "type": "text"
+                        },
+                        {
+                            "key": "status",
+                            "value": "completed",
+                            "type": "text"
+                        },
+                        {
+                            "key": "notes",
+                            "value": "Pekerjaan selesai lancar",
+                            "type": "text"
+                        },
+                        {
+                            "key": "gps_lat",
+                            "value": "-6.2",
+                            "type": "text"
+                        },
+                        {
+                            "key": "gps_lng",
+                            "value": "106.816666",
+                            "type": "text"
+                        },
+                        {
+                            "key": "photo",
+                            "type": "file",
+                            "src": ""
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:8000/api/reports",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "8000",
+                    "path": ["api", "reports"]
+                }
+            },
+            "response": []
+        }
+    ],
+    "variable": [
+        {
+            "key": "token",
+            "value": ""
+        }
+    ]
+}
